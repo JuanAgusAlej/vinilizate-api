@@ -1,0 +1,12 @@
+{
+    "database": "TMD",
+    "user": "postgres",
+    "password": "47981293",
+    "options": {
+      "dialect": "postgres",
+      "host": "localhost",
+      "port": 5432,
+      "logging": false
+    }
+  }
+  
