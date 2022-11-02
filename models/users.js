@@ -18,10 +18,7 @@ User.init(
       type: S.STRING,
       allowNull: false,
     },
-    role_id : {
-      type: S.STRING
-    },
-    
+
     password: {
       type: S.STRING,
       allowNull: false,
@@ -30,7 +27,7 @@ User.init(
       type: S.STRING,
     },
   },
-  { sequelize: db, modelName: 'users' }
+  { sequelize: db, modelName: "users" }
 );
 
-module.exports = User
+module.exports = User;
