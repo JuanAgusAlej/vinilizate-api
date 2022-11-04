@@ -5,12 +5,15 @@ const cors = require("cors");
 const db = require("./DB/index");
 const { User, Disc, Artist, Cart, Order, Genre, Role } = require("./models/index");
 const routes = require('./routes')
-app.use(volleyball);
+const cookieParser = require('cookie-parser')
 
+
+app.use(volleyball);
 // googlear más tarde
 app.use(cors({ credentials: true, origin: "http://localhost:3000/" }));
 
 app.use(express.json());
+app.use(cookieParser())
 
 app.use("/api", routes);
 

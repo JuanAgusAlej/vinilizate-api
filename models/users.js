@@ -1,11 +1,14 @@
 const S = require("sequelize");
 const db = require("../DB/index");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 
 class User extends S.Model {
-  // hash(password, salt) {
-  //   return bcrypt.hash(password, salt);
-  // }
+  validatePassword (password) {
+    console.log('SALT',this.salt)
+    return bcrypt.hash(password, this.salt)
+  
+    .then(newHash => newHash === this.password)
+   }
 }
 
 User.init(
@@ -34,16 +37,20 @@ User.init(
   { sequelize: db, modelName: "users" }
 );
 
-
+  // Métodos de instancia
   User.prototype.hash = function(password, salt) {
   return bcrypt.hash(password, salt);
 }
 
+ 
+
+ //Hooks
 User.beforeCreate((user) => {
   user.salt = bcrypt.genSaltSync();
   return user.hash(user.password, user.salt).then((hash) => {
     user.password = hash;
   });
 })
+
 
 module.exports = User;
