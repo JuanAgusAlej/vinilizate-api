@@ -60,4 +60,16 @@ usersRouter.post("/logout", (req, res) => {
   res.sendStatus(204);
 });
 
+
+usersRouter.put("/:id",  (req, res, next) => {
+  const id = req.params.id
+  const {name,lastName,email, password} = req.body
+  try {
+      const updated = User.update({ name,lastName,email,password }, { where: { id } })
+      res.status(201).send(updated[1])
+  }
+  catch (e) { res.status(503).end() }
+})
+
+
 module.exports = usersRouter;
