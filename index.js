@@ -3,7 +3,7 @@ const app = express();
 const volleyball = require("volleyball");
 const cors = require("cors");
 const db = require("./DB/index");
-const { User, Disc, Artist, Cart, Order, Genre, Role } = require("./models/index");
+const { User, Disc, Artist, Cart, Order, Genre, Role, Item } = require("./models/index");
 const routes = require('./routes')
 const cookieParser = require('cookie-parser')
 

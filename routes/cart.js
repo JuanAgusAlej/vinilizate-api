@@ -1,31 +1,52 @@
 const express = require("express");
+
 const cartRouter = express.Router();
-const { Cart } = require("../models");
+const { Cart, Disc, Item } = require("../models");
 
+cartRouter.post("/", (req, res) => {
+  Cart.create().then((cart) => res.send(cart));
+});
 
+cartRouter.post("/:cartId/:discId", (req, res) => {
+  //ruta para agregar un producto al carrito
 
+  const cartId = req.params.cartId;
+  const discId = req.params.discId;
 
-cartRouter.post("/", (req,res)=> {        //ruta para agregar un producto al carrito
-Cart.create(req.body).then((car)=> res.status(201).send(car))
-})
-
-cartRouter.delete("/:id", (req,res)=> {      //ruta para eliminar un producto del carrito 
-    const id= req.params.id
-    Cart.destroy({where:{id}}).then(()=> res.status(200).send("Producto eliminado"))
-
-    })
-
-    cartRouter.put("/:id",  (req, res, next) => {       // ruta para editar la cantidad del producto del carrito 
-        const id = req.params.id
-        const {products} = req.body
-        try {
-            const updated = Cart.update({ products }, { where: { id } })
-            res.status(201).send(updated[1])
-        }
-        catch (e) { res.status(503).end() }
+  Disc.findByPk(discId).then((disc) => {
+    Cart.findByPk(cartId).then((cart) =>
+      Item.create().then((item) => {
+        item.setDisc(disc);
+        item.setCart(cart);
+        res.send(item);
       })
+    );
+  });
+});
 
+cartRouter.delete("/:cartId/:discId", (req, res) => {
+  //ruta para eliminar un producto del carrito
 
+  Item.destroy({
+    where: {
+      cartId: req.params.cartId,
+      discId: req.params.discId,
+    },
+  }).then(() => res.sendStatus(204));
+});
 
+cartRouter.put("/:cartId/:discId", (req, res) => {
+  // ruta para editar la cantidad del producto del carrito
 
-module.exports= cartRouter
+  Item.update(req.body, {
+    where: {
+      cartId: req.params.cartId,
+      discId: req.params.discId,
+    },
+    returning: true,
+  }).then((item) => {
+    res.send(item[1][0]);
+  });
+});
+
+module.exports = cartRouter;

@@ -5,6 +5,7 @@ const Cart = require("./cart");
 const Order = require("./order");
 const Genre = require("./genre");
 const Role = require('./role')
+const Item= require("./items")
 
 User.hasOne(Cart, {as: 'user'});
 Cart.belongsTo(User)
@@ -20,13 +21,18 @@ Disc.belongsTo(Genre, {as:'genre'})
 Genre.hasMany(Disc)
 
 
+ Cart.hasMany(Item)
+ Item.belongsTo(Cart)
+ Item.belongsTo(Disc)
+
+
 //Genre.hasOne(Artist)
 //Artist.belongsTo(Genre)
 //Genre.hasMany(Artist)
 //Artist.belongsTo(Genre)
 //Genre.belongsTMany(Artist, throw:'')
 
-module.exports = { User, Disc, Artist, Cart, Order, Genre , Role};
+module.exports = { User, Disc, Artist, Cart, Order, Genre , Role, Item};
 
 // belongsTo, hasMany, hasOne, belongsToMany
 

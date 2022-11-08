@@ -61,15 +61,17 @@ usersRouter.post("/logout", (req, res) => {
 });
 
 
-usersRouter.put("/:id",  (req, res, next) => {
+usersRouter.put("/:id", async (req, res, next) => {
   const id = req.params.id
   const {name,lastName,email, password} = req.body
   try {
-      const updated = User.update({ name,lastName,email,password }, { where: { id } })
+      const updated = await User.update({ name,lastName,email,password }, { where: { id } })
       res.status(201).send(updated[1])
   }
   catch (e) { res.status(503).end() }
-})
+});
+
+
 
 
 module.exports = usersRouter;
