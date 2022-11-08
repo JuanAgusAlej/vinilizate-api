@@ -8,9 +8,7 @@ Order.init(
    products: {
     type:S.STRING,
    },
-   totalValue: {
-    type:S.INTEGER
-   },
+  
    adress: {
     type:S.STRING,
     
@@ -20,9 +18,6 @@ Order.init(
     type: S.STRING
    },
 
-   extra: {
-    type:S.STRING
-   }
 
 
 

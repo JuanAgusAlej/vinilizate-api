@@ -3,6 +3,7 @@ const productsRouter = express.Router();
 const Disc = require("../models/discs");
 const Artist = require("../models/artists");
 const Genre = require("../models/genre");
+const Cart=require("../models/cart")
 
 productsRouter.get("/", (req, res, next) => {
   Disc.findAll()
@@ -61,5 +62,7 @@ productsRouter.delete("/:id", (req, res, next) => {
     res.sendStatus(204);
   });
 });
+
+
 
 module.exports = productsRouter;

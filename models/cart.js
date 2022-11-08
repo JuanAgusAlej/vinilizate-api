@@ -5,9 +5,7 @@ class Cart extends S.Model {}
 
 Cart.init(
   {
-   products: {
-    type:S.STRING,
-   }
+  
 
   },{sequelize: db, modelName:'carts'})
 
