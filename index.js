@@ -20,7 +20,7 @@ app.use("/api", routes);
 db.sync({ force: false })
   .then(() => {
     console.log("DB CONNECTED");
-    app.listen(8080, () => console.log("Server listening at port 3000"));
+    app.listen(3000, () => console.log("Server listening at port 3000"));
   })
   .catch((error) => console.log(error));
 
