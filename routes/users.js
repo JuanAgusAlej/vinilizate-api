@@ -29,10 +29,10 @@ usersRouter.post("/login", (req, res) => {
         name: user.name,
         lastName: user.lastName,
       };
-      const token = generateToken(payload);
+       const token = generateToken(payload);
 
       res.cookie("token", token);
-      res.send(payload);
+      res.send({ payload, token });
     });
   });
 });
