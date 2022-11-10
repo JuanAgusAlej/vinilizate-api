@@ -1,33 +1,48 @@
 const express = require("express");
 const usersRouter = express.Router();
-const { User } = require("../models");
+const { User, Role } = require("../models");
 const { generateToken, validateToken } = require("../AUTH/tokens");
 
-usersRouter.get("/", (req, res) => {
-  User.findAll().then((users) => res.send(users));
+//Ruta de registro de user
+usersRouter.post("/register", (req, res) => {
+  const { name, lastName, email, password } = req.body;
+  const user = {
+    name,
+    lastName,
+    email,
+    password,
+  };
+  User.create(user).then((user) => {
+    Role.findOne({ where: { role: "user" } })
+      .then((role) => {
+        user.setRole(role);
+        res.status(201).send(user);
+      })
+      .catch((error) => res.send(error));
+  });
 });
 
-usersRouter.post("/register", (req, res) => {
-  User.create(req.body).then((user) => res.status(201).send(user));
-});
+//Ruta de login
 
 usersRouter.post("/login", (req, res) => {
   const { email, password } = req.body;
-  console.log(req.body)
-  User.findOne({ where: { email: email } }).then((user) => {
-    console.log("USER", user)
+  console.log(req.body);
+  User.findOne({
+    where: { email: email },
+    include: { model: Role, as: "role" },
+  }).then((user) => {
+    console.log("USER", user);
     if (!user) return res.sendStatus(401);
     user.validatePassword(password).then((isValid) => {
-      console.log('vaLID', isValid)
+      console.log("VALID", isValid);
       if (!isValid) return res.sendStatus(401);
 
-      // Si encuentra al usuario por el email y el password hasheado coincide con el del registro
-      //prosigue la generación de un token
-
+      console.log(user);
       const payload = {
         email: user.email,
         name: user.name,
         lastName: user.lastName,
+        role: user.role.role,
       };
        const token = generateToken(payload);
 
@@ -41,7 +56,7 @@ usersRouter.get("/secret", (rea, res) => {
   const token = res.cookie.token;
 
   const { user } = validateToken(token);
-
+  console.log(user);
   res.send(user);
 });
 
@@ -57,8 +72,10 @@ usersRouter.get("/me", (req, res) => {
 
 usersRouter.post("/logout", (req, res) => {
   res.clearCookie("token");
-  res.sendStatus(204);
+  res.status(204).send("Logout exitoso");
 });
+
+//rutas de admin
 
 
 usersRouter.put("/:id", async (req, res, next) => {
@@ -73,5 +90,15 @@ usersRouter.put("/:id", async (req, res, next) => {
 
 
 
+// usersRouter.post("/register", (req, res) => {
+//   const {name, lastname, email, password} = req.body;
+//   const user = {
+//   name,
+//   lastName,
+//   email,
+//   password
+//   }
+//     User.create(user).then((user) => res.status(201).send(user));
+//   })
 
 module.exports = usersRouter;
