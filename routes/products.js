@@ -63,4 +63,26 @@ productsRouter.delete("/:id", (req, res, next) => {
   });
 });
 
+
+
+productsRouter.get("/disc/:genreId", (req, res) => {
+  Genre.findOne({
+    where: { id: req.params.genreId },
+    include: {
+      model: Disc,
+    },
+  })
+    .then((gen) => res.send(gen))
+    .catch((err) => res.status(400).send(err));
+});
+
+productsRouter.get("/name/:name", (req, res) => {
+  Disc.findOne({ where: { name: req.params.name } })
+    .then((nom) => {
+      res.status(200).send(nom);
+    })
+    .catch((err) => res.status(400).send(err));
+});
+
+
 module.exports = productsRouter;
