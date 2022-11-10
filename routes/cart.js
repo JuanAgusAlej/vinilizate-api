@@ -1,16 +1,18 @@
 const express = require("express");
 
 const cartRouter = express.Router();
-const { Cart, Disc, Item } = require("../models");
 
-// Cart.hasMany(Item);
-// Item.belongsTo(Cart);
-// Item.belongsTo(Disc);
+const { Cart, Disc, Item, User } = require("../models");
 
-cartRouter.post("/", (req, res) => {
-  Cart.create()
-    .then((cart) => res.send(cart))
-    .catch((err) => res.status(400).send(err));
+cartRouter.post("/:userId", (req, res) => {
+  User.findByPk(req.params.userId).then((user) => {
+    Cart.create().then((cart) => {
+      user.setCart(cart);
+      cart.setUser(user);
+      res.send(cart);
+    });
+  });
+
 });
 
 cartRouter.post("/:cartId/:discId", (req, res) => {
