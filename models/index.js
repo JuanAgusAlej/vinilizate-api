@@ -28,8 +28,4 @@ Genre.hasMany(Disc)
 
 module.exports = { User, Disc, Artist, Cart, Order, Genre , Role};
 
-// belongsTo, hasMany, hasOne, belongsToMany
 
-//relación de uno a uno:
-//de uno a muchos:
-// muchos a muchos:
