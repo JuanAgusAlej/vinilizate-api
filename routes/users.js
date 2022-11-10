@@ -44,10 +44,10 @@ usersRouter.post("/login", (req, res) => {
         lastName: user.lastName,
         role: user.role.role,
       };
-      const token = generateToken(payload);
+       const token = generateToken(payload);
 
       res.cookie("token", token);
-      res.send(payload);
+      res.send({ payload, token });
     });
   });
 });
@@ -77,19 +77,18 @@ usersRouter.post("/logout", (req, res) => {
 
 //rutas de admin
 
-usersRouter.put("/:id", (req, res, next) => {
-  const id = req.params.id;
-  const { name, lastName, email, password } = req.body;
+
+usersRouter.put("/:id", async (req, res, next) => {
+  const id = req.params.id
+  const {name,lastName,email, password} = req.body
   try {
-    const updated = User.update(
-      { name, lastName, email, password },
-      { where: { id } }
-    );
-    res.status(201).send(updated[1]);
-  } catch (e) {
-    res.status(503).end();
+      const updated = await User.update({ name,lastName,email,password }, { where: { id } })
+      res.status(201).send(updated[1])
   }
+  catch (e) { res.status(503).end() }
 });
+
+
 
 // usersRouter.post("/register", (req, res) => {
 //   const {name, lastname, email, password} = req.body;

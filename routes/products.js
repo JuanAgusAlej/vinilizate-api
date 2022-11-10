@@ -3,6 +3,7 @@ const productsRouter = express.Router();
 const Disc = require("../models/discs");
 const Artist = require("../models/artists");
 const Genre = require("../models/genre");
+const Cart = require("../models/cart");
 
 productsRouter.get("/", (req, res, next) => {
   Disc.findAll()
@@ -26,13 +27,17 @@ productsRouter.get("/:id", (req, res, next) => {
     .catch(next);
 });
 
-productsRouter.post("/", (req, res, next) => {
-  Disc.create(req.body)
-    .then((disc) => {
-      console.log("disco creado");
-      res.status(201).send(disc);
-    })
-    .catch(next);
+productsRouter.post("/:idArtist/:idGenre", (req, res, next) => {
+  Artist.findOne({ where: { id: req.params.idArtist } }).then((artist) => {
+    Genre.findOne({ where: { id: req.params.idGenre } }).then((genre) => {
+      Disc.create(req.body).then((disc) => {
+        disc.setArtist(artist);
+        disc.setGenre(genre);
+        console.log("disco creado");
+        res.status(201).send(disc);
+      });
+    });
+  });
 });
 
 productsRouter.put("/:id", (req, res, next) => {

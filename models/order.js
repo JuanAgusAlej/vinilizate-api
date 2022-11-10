@@ -5,27 +5,18 @@ class Order extends S.Model {}
 
 Order.init(
   {
-   products: {
-    type:S.STRING,
-   },
-   totalValue: {
-    type:S.INTEGER
-   },
-   adress: {
-    type:S.STRING,
-    
-   },
-   
-   locality: {
-    type: S.STRING
-   },
+    adress: {
+      type: S.STRING,
+    },
 
-   extra: {
-    type:S.STRING
-   }
+    locality: {
+      type: S.STRING,
+    },
+    totalValue: {
+      type: S.INTEGER,
+    },
+  },
+  { sequelize: db, modelName: "orders" }
+);
 
-
-
-  },{sequelize: db, modelName:'orders'})
-
-  module.exports = Order
+module.exports = Order;
