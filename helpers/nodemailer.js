@@ -1,6 +1,19 @@
 const nodemailer = require("nodemailer");
+const { Disc } = require("../models");
 
-const mailSender = () => {
+const mailSender = async (order, user, items) => {
+  let mensaje = "Tu compra fue realizada con exito!\n\n";
+  let receptor = user.email;
+
+  for (let i = 0; i < items.length; i++) {
+    await Disc.findByPk(items[i].discId).then((disc) => {
+      mensaje = `${mensaje}${items[i].cantidad} ${disc.name} ---> ${disc.price} c/u \n`;
+      return disc;
+    });
+  }
+
+  mensaje = `${mensaje}\nDireccion de entrega: ${order.adress}\nLocalidad: ${order.locality}`;
+
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -11,9 +24,9 @@ const mailSender = () => {
 
   const mailOptions = {
     from: "VinilizateArgentina@gmail.com",
-    to: "agustinsa1999@gmail.com",
-    subject: "prueba 2",
-    text: "otro mail de prueba",
+    to: receptor,
+    subject: "Checkout realizado",
+    text: mensaje,
   };
 
   transporter.sendMail(mailOptions, function (error, info) {

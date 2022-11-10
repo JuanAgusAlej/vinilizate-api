@@ -63,11 +63,7 @@ productsRouter.delete("/:id", (req, res, next) => {
   });
 });
 
-// productsRouter.post("/", (req, res) => {
-//   Disc.create(req.body).then((disco) => {
-//     res.send(disco);
-//   });
-// });
+
 
 productsRouter.get("/disc/:genreId", (req, res) => {
   Genre.findOne({
@@ -87,5 +83,6 @@ productsRouter.get("/name/:name", (req, res) => {
     })
     .catch((err) => res.status(400).send(err));
 });
+
 
 module.exports = productsRouter;

@@ -16,9 +16,12 @@ const {
 const routes = require("./routes");
 const cookieParser = require("cookie-parser");
 
+
 app.use(volleyball);
+
 // googlear más tarde
 app.use(cors());
+
 
 app.use(express.json());
 app.use(cookieParser());

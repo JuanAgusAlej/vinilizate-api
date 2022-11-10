@@ -7,8 +7,10 @@ const Genre = require("./genre");
 const Role = require("./role");
 const Item = require("./items");
 
-User.hasOne(Cart, { as: "user" });
-Cart.belongsTo(User);
+
+User.belongsTo(Cart, { as: "cart" });
+Cart.belongsTo(User, { as: "user" });
+
 User.belongsToMany(Disc, { through: "desireList" });
 Disc.belongsToMany(User, { through: "desireList" });
 User.hasMany(Order);
@@ -19,6 +21,10 @@ Disc.belongsTo(Artist, { as: "artist" });
 Artist.hasMany(Disc);
 Disc.belongsTo(Genre, { as: "genre" });
 Genre.hasMany(Disc);
+
+Order.belongsTo(Cart, { as: "cart" });
+
+
 
 Cart.hasMany(Item);
 Item.belongsTo(Cart);
