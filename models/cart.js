@@ -3,10 +3,6 @@ const db = require("../DB/index");
 
 class Cart extends S.Model {}
 
-Cart.init(
-  {
-  
+Cart.init({}, { sequelize: db, modelName: "carts" });
 
-  },{sequelize: db, modelName:'carts'})
-
-  module.exports = Cart
+module.exports = Cart;

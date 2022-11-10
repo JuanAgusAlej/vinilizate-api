@@ -1,6 +1,7 @@
 const express = require("express");
 
 const cartRouter = express.Router();
+
 const { Cart, Disc, Item, User } = require("../models");
 
 cartRouter.post("/:userId", (req, res) => {
@@ -11,6 +12,7 @@ cartRouter.post("/:userId", (req, res) => {
       res.send(cart);
     });
   });
+
 });
 
 cartRouter.post("/:cartId/:discId", (req, res) => {
@@ -19,15 +21,17 @@ cartRouter.post("/:cartId/:discId", (req, res) => {
   const cartId = req.params.cartId;
   const discId = req.params.discId;
 
-  Disc.findByPk(discId).then((disc) => {
-    Cart.findByPk(cartId).then((cart) =>
-      Item.create().then((item) => {
-        item.setDisc(disc);
-        item.setCart(cart);
-        res.send(item);
-      })
-    );
-  });
+  Disc.findByPk(discId)
+    .then((disc) => {
+      Cart.findByPk(cartId).then((cart) =>
+        Item.create().then((item) => {
+          item.setDisc(disc);
+          item.setCart(cart);
+          res.send(item);
+        })
+      );
+    })
+    .catch((err) => res.status(400).send(err));
 });
 
 cartRouter.delete("/:cartId/:discId", (req, res) => {
