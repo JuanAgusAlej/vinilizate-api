@@ -1,10 +1,16 @@
 const express = require("express");
 
 const cartRouter = express.Router();
-const { Cart, Disc, Item } = require("../models");
+const { Cart, Disc, Item, User } = require("../models");
 
-cartRouter.post("/", (req, res) => {
-  Cart.create().then((cart) => res.send(cart));
+cartRouter.post("/:userId", (req, res) => {
+  User.findByPk(req.params.userId).then((user) => {
+    Cart.create().then((cart) => {
+      user.setCart(cart);
+      cart.setUser(user);
+      res.send(cart);
+    });
+  });
 });
 
 cartRouter.post("/:cartId/:discId", (req, res) => {
