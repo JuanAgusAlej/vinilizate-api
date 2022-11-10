@@ -49,7 +49,4 @@ genreRouter.get("/", (req, res) => {
     .catch((err) => res.status(400).send(err));
 });
 
-// Disc.belongsTo(Genre, { as: "genre" });
-// Genre.hasMany(Disc);
-
 module.exports = genreRouter;
