@@ -3,6 +3,7 @@ const { Disc } = require("../models");
 
 const mailSender = async (order, user, items) => {
   let mensaje = "Tu compra fue realizada con exito!\n\n";
+  let receptor = user.email;
 
   for (let i = 0; i < items.length; i++) {
     await Disc.findByPk(items[i].discId).then((disc) => {
@@ -23,7 +24,7 @@ const mailSender = async (order, user, items) => {
 
   const mailOptions = {
     from: "VinilizateArgentina@gmail.com",
-    to: "agustinsa1999@gmail.com",
+    to: receptor,
     subject: "Checkout realizado",
     text: mensaje,
   };
