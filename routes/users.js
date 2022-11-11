@@ -1,6 +1,6 @@
 const express = require("express");
 const usersRouter = express.Router();
-const { User, Role } = require("../models");
+const { User, Role, Cart } = require("../models");
 const { generateToken, validateToken } = require("../AUTH/tokens");
 
 //Ruta de registro de user
@@ -16,7 +16,11 @@ usersRouter.post("/register", (req, res) => {
     Role.findOne({ where: { role: "user" } })
       .then((role) => {
         user.setRole(role);
-        res.status(201).send(user);
+        Cart.create().then((cart) => {
+          user.setCart(cart);
+          cart.setUser(user);
+          res.status(201).send(user);
+        });
       })
       .catch((error) => res.send(error));
   });
@@ -39,6 +43,7 @@ usersRouter.post("/login", (req, res) => {
 
       console.log(user);
       const payload = {
+        id: user.id,
         email: user.email,
         name: user.name,
         lastName: user.lastName,

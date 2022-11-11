@@ -12,25 +12,30 @@ const {
   Genre,
   Role,
   Item,
-} = require("./models/index");
-const routes = require("./routes");
-const cookieParser = require("cookie-parser");
-
+} = require('./models/index');
+const routes = require('./routes');
+const cookieParser = require('cookie-parser');
 
 app.use(volleyball);
-
 // googlear más tarde
-app.use(cors());
-
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 app.use(cookieParser());
 
-app.use("/api", routes);
+app.use('/api', routes);
 
 db.sync({ force: false })
   .then(() => {
-    console.log("DB CONNECTED");
-    app.listen(3000, () => console.log("Server listening at port 3000"));
+    console.log('DB CONNECTED');
+    app.listen(8080, () => console.log('Server listening at port 3000'));
   })
   .catch((error) => console.log(error));
+
+
