@@ -1,6 +1,6 @@
 const express = require("express");
 const usersRouter = express.Router();
-const { User, Role } = require("../models");
+const { User, Role, Cart } = require("../models");
 const { generateToken, validateToken } = require("../AUTH/tokens");
 
 //Ruta de registro de user
@@ -19,8 +19,8 @@ usersRouter.post("/register", (req, res) => {
         Cart.create().then((cart) => {
           user.setCart(cart);
           cart.setUser(user);
+          res.status(201).send(user);
         });
-        res.status(201).send(user);
       })
       .catch((error) => res.send(error));
   });
