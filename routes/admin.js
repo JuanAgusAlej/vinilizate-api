@@ -30,7 +30,6 @@ adminRouter.get("/", (req, res) => {
     return res.status(403).send("No tiene los permisos necesarios");
   }
   User.findAll({
-    where: { roleId: 2 },
     include: { model: Role, as: "role" },
   })
     .then((users) => res.send(users))
@@ -61,14 +60,13 @@ adminRouter.put("/:id", (req, res) => {
   const { id } = req.params;
 
   const token = req.cookies.token;
-
   if (!token) return res.sendStatus(401);
   console.log(validateRolAdmin(token));
   if (!validateRolAdmin(token)) {
     return res.status(403).send("No tiene los permisos necesarios");
   }
 
-  User.update({ roleId: 2 }, { where: { id } })
+  User.update({ roleId: 1 }, { where: { id } })
     .then((updatedUser) =>
       res.status(200).send("El usuario ahora tiene rol de Administrador")
     )

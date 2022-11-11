@@ -16,6 +16,10 @@ usersRouter.post("/register", (req, res) => {
     Role.findOne({ where: { role: "user" } })
       .then((role) => {
         user.setRole(role);
+        Cart.create().then((cart) => {
+          user.setCart(cart);
+          cart.setUser(user);
+        });
         res.status(201).send(user);
       })
       .catch((error) => res.send(error));
@@ -39,6 +43,7 @@ usersRouter.post("/login", (req, res) => {
 
       console.log(user);
       const payload = {
+        id: user.id,
         email: user.email,
         name: user.name,
         lastName: user.lastName,
